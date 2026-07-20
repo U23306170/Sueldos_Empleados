@@ -23,6 +23,11 @@ public final class Mensajes {
     public static void error(Component padre, String texto) {
         JOptionPane.showMessageDialog(padre, texto, "Error", JOptionPane.ERROR_MESSAGE);
     }
+    
+    public static void advertencia(Component padre,String texto) {
+        JOptionPane.showMessageDialog(padre,texto,"Advertencia",JOptionPane.WARNING_MESSAGE
+        );
+    }
 
     public static boolean confirmarEliminacion(Component padre) {
         return JOptionPane.showConfirmDialog(padre, "¿Desea eliminar el empleado seleccionado?", "Confirmar eliminación", JOptionPane.YES_NO_OPTION, JOptionPane.WARNING_MESSAGE) == JOptionPane.YES_OPTION;

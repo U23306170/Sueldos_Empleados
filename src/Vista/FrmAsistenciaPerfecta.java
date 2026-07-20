@@ -4,9 +4,14 @@
  */
 package Vista;
 
+import controlador.BoletaControlador;
+import controlador.AreaControlador;
 import controlador.EmpleadoControlador;
+import java.util.List;
 import javax.swing.table.DefaultTableModel;
+import modelo.Area;
 import modelo.Empleado;
+import modelo.EstadisticasAsistencia;
 import util.Mensajes;
 
 /**
@@ -16,6 +21,7 @@ import util.Mensajes;
 public class FrmAsistenciaPerfecta extends javax.swing.JPanel {
 
     private final EmpleadoControlador empleadoControlador;
+    private final AreaControlador areaControlador;
 
     /**
      * Creates new form FrmAsistenciaPerfecta
@@ -26,8 +32,10 @@ public class FrmAsistenciaPerfecta extends javax.swing.JPanel {
 
     public FrmAsistenciaPerfecta(EmpleadoControlador controlador) {
         this.empleadoControlador = controlador;
+        this.areaControlador = new AreaControlador();
         initComponents();
         configurarTabla();
+        cargarAreasFiltro();
     }
 
     /**
@@ -39,18 +47,36 @@ public class FrmAsistenciaPerfecta extends javax.swing.JPanel {
     // <editor-fold defaultstate="collapsed" desc="Generated Code">//GEN-BEGIN:initComponents
     private void initComponents() {
 
-        jButton1 = new javax.swing.JButton();
+        btnActualizarTabla = new javax.swing.JButton();
         jPanel1 = new javax.swing.JPanel();
         jLabel1 = new javax.swing.JLabel();
         jScrollPane2 = new javax.swing.JScrollPane();
         jScrollPane1 = new javax.swing.JScrollPane();
         jTable1 = new javax.swing.JTable();
+        jPanel2 = new javax.swing.JPanel();
+        lblDni = new javax.swing.JLabel();
+        lblNombre = new javax.swing.JLabel();
+        lblArea = new javax.swing.JLabel();
+        lblHijos = new javax.swing.JLabel();
+        lblSueldo = new javax.swing.JLabel();
+        btnVerDetalle = new javax.swing.JButton();
+        btnFiltrar = new javax.swing.JButton();
+        cboAreaFiltro = new javax.swing.JComboBox<>();
+        jLabel2 = new javax.swing.JLabel();
+        jLabel3 = new javax.swing.JLabel();
+        lblTotalPerfectos = new javax.swing.JLabel();
+        jLabel4 = new javax.swing.JLabel();
+        lblAreaMasCumplida = new javax.swing.JLabel();
+        jLabel5 = new javax.swing.JLabel();
+        jLabel6 = new javax.swing.JLabel();
+        lblPromedioSueldo = new javax.swing.JLabel();
+        lblPromedioDias = new javax.swing.JLabel();
 
         setBackground(new java.awt.Color(255, 255, 255));
         setPreferredSize(new java.awt.Dimension(500, 442));
 
-        jButton1.setText("Actualizar");
-        jButton1.addActionListener(this::jButton1ActionPerformed);
+        btnActualizarTabla.setText("Actualizar");
+        btnActualizarTabla.addActionListener(this::btnActualizarTablaActionPerformed);
 
         jPanel1.setBackground(new java.awt.Color(51, 204, 255));
 
@@ -64,7 +90,7 @@ public class FrmAsistenciaPerfecta extends javax.swing.JPanel {
             .addGroup(jPanel1Layout.createSequentialGroup()
                 .addGap(168, 168, 168)
                 .addComponent(jLabel1)
-                .addContainerGap(172, Short.MAX_VALUE))
+                .addContainerGap(270, Short.MAX_VALUE))
         );
         jPanel1Layout.setVerticalGroup(
             jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -88,14 +114,116 @@ public class FrmAsistenciaPerfecta extends javax.swing.JPanel {
 
         jScrollPane2.setViewportView(jScrollPane1);
 
+        jPanel2.setBackground(new java.awt.Color(153, 255, 153));
+
+        lblDni.setText("DNI");
+
+        lblNombre.setText("Nombre");
+
+        lblArea.setText("Area");
+
+        lblHijos.setText("Hijos");
+
+        lblSueldo.setText("Sueldo");
+
+        javax.swing.GroupLayout jPanel2Layout = new javax.swing.GroupLayout(jPanel2);
+        jPanel2.setLayout(jPanel2Layout);
+        jPanel2Layout.setHorizontalGroup(
+            jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(jPanel2Layout.createSequentialGroup()
+                .addGap(12, 12, 12)
+                .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addComponent(lblSueldo)
+                    .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
+                        .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                            .addComponent(lblArea)
+                            .addComponent(lblNombre)
+                            .addComponent(lblDni))
+                        .addGroup(jPanel2Layout.createSequentialGroup()
+                            .addComponent(lblHijos)
+                            .addGap(20, 20, 20))))
+                .addContainerGap(122, Short.MAX_VALUE))
+        );
+        jPanel2Layout.setVerticalGroup(
+            jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(jPanel2Layout.createSequentialGroup()
+                .addGap(36, 36, 36)
+                .addComponent(lblDni)
+                .addGap(18, 18, 18)
+                .addComponent(lblNombre)
+                .addGap(18, 18, 18)
+                .addComponent(lblArea)
+                .addGap(18, 18, 18)
+                .addComponent(lblHijos)
+                .addGap(18, 18, 18)
+                .addComponent(lblSueldo)
+                .addContainerGap(44, Short.MAX_VALUE))
+        );
+
+        btnVerDetalle.setText("Ver Detalle");
+        btnVerDetalle.addActionListener(this::btnVerDetalleActionPerformed);
+
+        btnFiltrar.setText("Filtrar");
+        btnFiltrar.addActionListener(this::btnFiltrarActionPerformed);
+
+        jLabel2.setText("Estadisticas rapidas:");
+
+        jLabel3.setText("Asistencia Perfectas:");
+
+        lblTotalPerfectos.setText("0");
+
+        jLabel4.setText("Area mas Cumplida:");
+
+        lblAreaMasCumplida.setText("Area");
+
+        jLabel5.setText("Dias Promedio:");
+
+        jLabel6.setText("Sueldo Promedio:");
+
+        lblPromedioSueldo.setText("0.0");
+
+        lblPromedioDias.setText("0");
+
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(this);
         this.setLayout(layout);
         layout.setHorizontalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(layout.createSequentialGroup()
-                .addContainerGap()
-                .addComponent(jButton1)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addGroup(layout.createSequentialGroup()
+                        .addContainerGap()
+                        .addComponent(jPanel2, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                    .addGroup(layout.createSequentialGroup()
+                        .addGap(63, 63, 63)
+                        .addComponent(btnVerDetalle))
+                    .addGroup(layout.createSequentialGroup()
+                        .addContainerGap()
+                        .addComponent(btnActualizarTabla))
+                    .addGroup(layout.createSequentialGroup()
+                        .addContainerGap()
+                        .addComponent(btnFiltrar)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                        .addComponent(cboAreaFiltro, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                    .addGroup(layout.createSequentialGroup()
+                        .addContainerGap()
+                        .addComponent(jLabel2))
+                    .addGroup(layout.createSequentialGroup()
+                        .addContainerGap()
+                        .addComponent(jLabel3)
+                        .addGap(23, 23, 23)
+                        .addComponent(lblTotalPerfectos))
+                    .addGroup(layout.createSequentialGroup()
+                        .addContainerGap()
+                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                            .addComponent(jLabel4)
+                            .addComponent(jLabel6)
+                            .addComponent(jLabel5))
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                            .addComponent(lblPromedioDias)
+                            .addComponent(lblPromedioSueldo)
+                            .addComponent(lblAreaMasCumplida))))
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
                 .addComponent(jScrollPane2)
                 .addContainerGap())
             .addComponent(jPanel1, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
@@ -104,30 +232,87 @@ public class FrmAsistenciaPerfecta extends javax.swing.JPanel {
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(layout.createSequentialGroup()
                 .addComponent(jPanel1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addGroup(layout.createSequentialGroup()
-                        .addGap(18, 18, 18)
-                        .addComponent(jButton1)
-                        .addContainerGap(356, Short.MAX_VALUE))
-                    .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
+                        .addGap(0, 0, Short.MAX_VALUE)
+                        .addComponent(jScrollPane2, javax.swing.GroupLayout.PREFERRED_SIZE, 445, javax.swing.GroupLayout.PREFERRED_SIZE))
+                    .addGroup(layout.createSequentialGroup()
+                        .addComponent(btnActualizarTabla)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                            .addComponent(btnFiltrar)
+                            .addComponent(cboAreaFiltro, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                        .addComponent(jLabel2)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                            .addComponent(jLabel3)
+                            .addComponent(lblTotalPerfectos))
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                            .addComponent(jLabel4)
+                            .addComponent(lblAreaMasCumplida))
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                            .addComponent(jLabel5)
+                            .addComponent(lblPromedioDias))
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                            .addComponent(jLabel6)
+                            .addComponent(lblPromedioSueldo))
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                        .addComponent(jScrollPane2, javax.swing.GroupLayout.PREFERRED_SIZE, 380, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addComponent(btnVerDetalle)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                        .addComponent(jPanel2, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                         .addContainerGap())))
         );
     }// </editor-fold>//GEN-END:initComponents
 
-    private void jButton1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton1ActionPerformed
+    private void btnActualizarTablaActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnActualizarTablaActionPerformed
         try {
-            DefaultTableModel modelo = (DefaultTableModel) jTable1.getModel();
-            modelo.setRowCount(0);
-            for (Empleado empleado : empleadoControlador.listarAsistenciaPerfecta()) {
-                modelo.addRow(new Object[]{empleado.getDni(), empleado.getNombre(), empleado.getArea().getNombre(), empleado.getDiasAsistidos()});
-            }
+            cboAreaFiltro.setSelectedIndex(-1);
+            cargarAsistenciaPerfecta(null);
+            actualizarEstadisticas();
+            limpiarDetalle();
             Mensajes.informacion(this, "Total con asistencia perfecta: " + empleadoControlador.contarAsistenciaPerfecta());
         } catch (RuntimeException e) {
             Mensajes.error(this, e.getMessage());
         }
-    }//GEN-LAST:event_jButton1ActionPerformed
+    }//GEN-LAST:event_btnActualizarTablaActionPerformed
+
+    private void btnVerDetalleActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnVerDetalleActionPerformed
+        int fila = jTable1.getSelectedRow();
+
+        if (fila == -1) {
+            Mensajes.advertencia(this,
+                    "Seleccione un empleado de la tabla");
+            return;
+        }
+
+        String dni = jTable1.getValueAt(fila, 0).toString();
+
+        Empleado empleado
+                = empleadoControlador.buscarPorDni(dni);
+
+        lblDni.setText(empleado.getDni());
+        lblNombre.setText(empleado.getNombre());
+        lblArea.setText(empleado.getArea().getNombre());
+        lblHijos.setText(String.valueOf(empleado.getNumeroHijos()));
+        lblSueldo.setText(
+                "S/ " + empleado.calcularSueldoNeto()
+        );
+    }//GEN-LAST:event_btnVerDetalleActionPerformed
+
+    private void btnFiltrarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnFiltrarActionPerformed
+        try {
+            Area area = (Area) cboAreaFiltro.getSelectedItem();
+            cargarAsistenciaPerfecta(area == null ? null : area.getIdArea());
+            limpiarDetalle();
+        } catch (RuntimeException e) {
+            Mensajes.error(this, e.getMessage());
+        }
+    }//GEN-LAST:event_btnFiltrarActionPerformed
 
     private void configurarTabla() {
         jTable1.setModel(new DefaultTableModel(new Object[][]{}, new String[]{"DNI", "Nombre", "Área", "Días"}) {
@@ -137,13 +322,63 @@ public class FrmAsistenciaPerfecta extends javax.swing.JPanel {
             }
         });
     }
+    private void cargarAreasFiltro() {
+        try {
+            cboAreaFiltro.removeAllItems();
+            for (Area area : areaControlador.listar()) cboAreaFiltro.addItem(area);
+            cboAreaFiltro.setSelectedIndex(-1); // sin selección = todas las áreas
+            cboAreaFiltro.setToolTipText("Seleccione un área; sin selección muestra todas.");
+        } catch (RuntimeException e) {
+            Mensajes.error(this, e.getMessage());
+        }
+    }
+
+    private void cargarAsistenciaPerfecta(Integer idArea) {
+        DefaultTableModel modelo = (DefaultTableModel) jTable1.getModel();
+        modelo.setRowCount(0);
+        List<Empleado> empleados = empleadoControlador.listarAsistenciaPerfectaPorArea(idArea);
+        for (Empleado empleado : empleados) {
+            modelo.addRow(new Object[]{empleado.getDni(), empleado.getNombre(), empleado.getArea().getNombre(), empleado.getDiasAsistidos()});
+        }
+    }
+
+    private void actualizarEstadisticas() {
+        EstadisticasAsistencia estadisticas = empleadoControlador.obtenerEstadisticasAsistencia();
+        lblTotalPerfectos.setText(String.valueOf(estadisticas.getTotalPerfectos()));
+        lblAreaMasCumplida.setText(estadisticas.getAreaMasCumplida());
+        lblPromedioDias.setText(estadisticas.getPromedioDias().toPlainString());
+        lblPromedioSueldo.setText("S/ " + estadisticas.getPromedioSueldo().toPlainString());
+    }
+
+    private void limpiarDetalle() {
+        lblDni.setText("DNI"); lblNombre.setText("Nombre"); lblArea.setText("Área");
+        lblHijos.setText("Hijos"); lblSueldo.setText("Sueldo");
+    }
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
-    private javax.swing.JButton jButton1;
+    private javax.swing.JButton btnActualizarTabla;
+    private javax.swing.JButton btnFiltrar;
+    private javax.swing.JButton btnVerDetalle;
+    private javax.swing.JComboBox<Area> cboAreaFiltro;
     private javax.swing.JLabel jLabel1;
+    private javax.swing.JLabel jLabel2;
+    private javax.swing.JLabel jLabel3;
+    private javax.swing.JLabel jLabel4;
+    private javax.swing.JLabel jLabel5;
+    private javax.swing.JLabel jLabel6;
     private javax.swing.JPanel jPanel1;
+    private javax.swing.JPanel jPanel2;
     private javax.swing.JScrollPane jScrollPane1;
     private javax.swing.JScrollPane jScrollPane2;
     private javax.swing.JTable jTable1;
+    private javax.swing.JLabel lblArea;
+    private javax.swing.JLabel lblAreaMasCumplida;
+    private javax.swing.JLabel lblDni;
+    private javax.swing.JLabel lblHijos;
+    private javax.swing.JLabel lblNombre;
+    private javax.swing.JLabel lblPromedioDias;
+    private javax.swing.JLabel lblPromedioSueldo;
+    private javax.swing.JLabel lblSueldo;
+    private javax.swing.JLabel lblTotalPerfectos;
     // End of variables declaration//GEN-END:variables
 }

@@ -6,6 +6,7 @@ package controlador;
 
 import java.util.List;
 import modelo.Empleado;
+import modelo.EstadisticasAsistencia;
 import servicio.EmpleadoService;
 import servicio.GestorEmpleados;
 
@@ -51,5 +52,13 @@ public class EmpleadoControlador {
 
     public int contarAsistenciaPerfecta() {
         return listarAsistenciaPerfecta().size();
+    }
+
+    public List<Empleado> listarAsistenciaPerfectaPorArea(Integer idArea) {
+        return servicio.listarAsistenciaPerfectaPorArea(idArea);
+    }
+
+    public EstadisticasAsistencia obtenerEstadisticasAsistencia() {
+        return servicio.calcularEstadisticasAsistencia();
     }
 }
