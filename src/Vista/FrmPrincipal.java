@@ -82,7 +82,7 @@ public class FrmPrincipal extends javax.swing.JFrame {
         btnCerrar.setBackground(new java.awt.Color(255, 51, 51));
         btnCerrar.setText("Cerrar");
         btnCerrar.addActionListener(this::btnCerrarActionPerformed);
-        pnlPrincipal.add(btnCerrar, new org.netbeans.lib.awtextra.AbsoluteConstraints(70, 420, 70, 30));
+        pnlPrincipal.add(btnCerrar, new org.netbeans.lib.awtextra.AbsoluteConstraints(60, 400, 70, 30));
 
         btnAsistenciaPerfecta.setText("Asistencia Perfecta");
         btnAsistenciaPerfecta.addActionListener(this::btnAsistenciaPerfectaActionPerformed);
@@ -107,7 +107,7 @@ public class FrmPrincipal extends javax.swing.JFrame {
             .addGroup(jPanel1Layout.createSequentialGroup()
                 .addGap(345, 345, 345)
                 .addComponent(jLabel1)
-                .addContainerGap(269, Short.MAX_VALUE))
+                .addContainerGap(256, Short.MAX_VALUE))
         );
         jPanel1Layout.setVerticalGroup(
             jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
