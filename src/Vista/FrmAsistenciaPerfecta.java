@@ -90,7 +90,7 @@ public class FrmAsistenciaPerfecta extends javax.swing.JPanel {
             .addGroup(jPanel1Layout.createSequentialGroup()
                 .addGap(168, 168, 168)
                 .addComponent(jLabel1)
-                .addContainerGap(270, Short.MAX_VALUE))
+                .addContainerGap(232, Short.MAX_VALUE))
         );
         jPanel1Layout.setVerticalGroup(
             jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -116,15 +116,15 @@ public class FrmAsistenciaPerfecta extends javax.swing.JPanel {
 
         jPanel2.setBackground(new java.awt.Color(153, 255, 153));
 
-        lblDni.setText("DNI");
+        lblDni.setText("DNI:");
 
-        lblNombre.setText("Nombre");
+        lblNombre.setText("Nombre:");
 
-        lblArea.setText("Area");
+        lblArea.setText("Area:");
 
-        lblHijos.setText("Hijos");
+        lblHijos.setText("Hijos:");
 
-        lblSueldo.setText("Sueldo");
+        lblSueldo.setText("Sueldo:");
 
         javax.swing.GroupLayout jPanel2Layout = new javax.swing.GroupLayout(jPanel2);
         jPanel2.setLayout(jPanel2Layout);
@@ -142,7 +142,7 @@ public class FrmAsistenciaPerfecta extends javax.swing.JPanel {
                         .addGroup(jPanel2Layout.createSequentialGroup()
                             .addComponent(lblHijos)
                             .addGap(20, 20, 20))))
-                .addContainerGap(122, Short.MAX_VALUE))
+                .addContainerGap(131, Short.MAX_VALUE))
         );
         jPanel2Layout.setVerticalGroup(
             jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -191,9 +191,6 @@ public class FrmAsistenciaPerfecta extends javax.swing.JPanel {
             .addGroup(layout.createSequentialGroup()
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addGroup(layout.createSequentialGroup()
-                        .addContainerGap()
-                        .addComponent(jPanel2, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
-                    .addGroup(layout.createSequentialGroup()
                         .addGap(63, 63, 63)
                         .addComponent(btnVerDetalle))
                     .addGroup(layout.createSequentialGroup()
@@ -222,9 +219,12 @@ public class FrmAsistenciaPerfecta extends javax.swing.JPanel {
                         .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                             .addComponent(lblPromedioDias)
                             .addComponent(lblPromedioSueldo)
-                            .addComponent(lblAreaMasCumplida))))
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                .addComponent(jScrollPane2)
+                            .addComponent(lblAreaMasCumplida)))
+                    .addGroup(layout.createSequentialGroup()
+                        .addContainerGap()
+                        .addComponent(jPanel2, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)))
+                .addGap(9, 9, 9)
+                .addComponent(jScrollPane2, javax.swing.GroupLayout.PREFERRED_SIZE, 0, Short.MAX_VALUE)
                 .addContainerGap())
             .addComponent(jPanel1, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
         );
@@ -264,8 +264,7 @@ public class FrmAsistenciaPerfecta extends javax.swing.JPanel {
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                         .addComponent(btnVerDetalle)
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                        .addComponent(jPanel2, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addContainerGap())))
+                        .addComponent(jPanel2, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))))
         );
     }// </editor-fold>//GEN-END:initComponents
 
@@ -295,13 +294,11 @@ public class FrmAsistenciaPerfecta extends javax.swing.JPanel {
         Empleado empleado
                 = empleadoControlador.buscarPorDni(dni);
 
-        lblDni.setText(empleado.getDni());
-        lblNombre.setText(empleado.getNombre());
-        lblArea.setText(empleado.getArea().getNombre());
-        lblHijos.setText(String.valueOf(empleado.getNumeroHijos()));
-        lblSueldo.setText(
-                "S/ " + empleado.calcularSueldoNeto()
-        );
+        lblDni.setText("DNI: " + empleado.getDni());
+        lblNombre.setText("Nombre: " +empleado.getNombre());
+        lblArea.setText("Area: " +empleado.getArea().getNombre());
+        lblHijos.setText(empleado.getNumeroHijos() + " hijos");
+        lblSueldo.setText("Suledo: " + empleado.calcularSueldoNeto() + " PEN");
     }//GEN-LAST:event_btnVerDetalleActionPerformed
 
     private void btnFiltrarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnFiltrarActionPerformed
@@ -322,10 +319,13 @@ public class FrmAsistenciaPerfecta extends javax.swing.JPanel {
             }
         });
     }
+
     private void cargarAreasFiltro() {
         try {
             cboAreaFiltro.removeAllItems();
-            for (Area area : areaControlador.listar()) cboAreaFiltro.addItem(area);
+            for (Area area : areaControlador.listar()) {
+                cboAreaFiltro.addItem(area);
+            }
             cboAreaFiltro.setSelectedIndex(-1); // sin selección = todas las áreas
             cboAreaFiltro.setToolTipText("Seleccione un área; sin selección muestra todas.");
         } catch (RuntimeException e) {
@@ -351,8 +351,11 @@ public class FrmAsistenciaPerfecta extends javax.swing.JPanel {
     }
 
     private void limpiarDetalle() {
-        lblDni.setText("DNI"); lblNombre.setText("Nombre"); lblArea.setText("Área");
-        lblHijos.setText("Hijos"); lblSueldo.setText("Sueldo");
+        lblDni.setText("DNI");
+        lblNombre.setText("Nombre");
+        lblArea.setText("Área");
+        lblHijos.setText("Hijos");
+        lblSueldo.setText("Sueldo");
     }
 
     // Variables declaration - do not modify//GEN-BEGIN:variables

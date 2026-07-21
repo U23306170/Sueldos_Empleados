@@ -22,6 +22,7 @@ public class FrmPrincipal extends javax.swing.JFrame {
      */
     public FrmPrincipal() {
         initComponents();
+        mostrarPanel(new FrmAsistenciaPerfecta(empleadoControlador));
     }
 
     private void mostrarPanel(JPanel vista) {
