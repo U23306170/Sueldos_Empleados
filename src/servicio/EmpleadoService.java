@@ -56,16 +56,23 @@ public class EmpleadoService {
     }
 
     public List<Empleado> listarAsistenciaPerfectaPorArea(Integer idArea) {
-        if (idArea == null) return listarAsistenciaPerfecta();
+        if (idArea == null) {
+            return listarAsistenciaPerfecta();
+        }
         return listarAsistenciaPerfecta().stream()
                 .filter(empleado -> idArea.equals(empleado.getArea().getIdArea()))
                 .collect(Collectors.toList());
     }
 
-    /** Calcula indicadores de toda la planilla, sin depender de Swing. */
+    /**
+     * Calcula indicadores de toda la planilla, sin depender de Swing.
+     * @return 
+     */
     public EstadisticasAsistencia calcularEstadisticasAsistencia() {
         List<Empleado> empleados = listar();
-        if (empleados.isEmpty()) return new EstadisticasAsistencia(0, "Sin datos", BigDecimal.ZERO, BigDecimal.ZERO);
+        if (empleados.isEmpty()) {
+            return new EstadisticasAsistencia(0, "Sin datos", BigDecimal.ZERO, BigDecimal.ZERO);
+        }
 
         List<Empleado> perfectos = listarAsistenciaPerfecta();
         String areaMasCumplida = perfectos.stream()
@@ -79,4 +86,3 @@ public class EmpleadoService {
         return new EstadisticasAsistencia(perfectos.size(), areaMasCumplida, promedioDias, promedioSueldo);
     }
 }
-
