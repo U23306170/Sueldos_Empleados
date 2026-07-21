@@ -4,7 +4,7 @@
  */
 package Vista;
 
-import controlador.EmpleadoControlador;
+import controlador.PlanillaFacade;
 import java.awt.BorderLayout;
 import javax.swing.*;
 
@@ -15,14 +15,14 @@ import javax.swing.*;
 public class FrmPrincipal extends javax.swing.JFrame {
 
     private static final java.util.logging.Logger logger = java.util.logging.Logger.getLogger(FrmPrincipal.class.getName());
-    private final EmpleadoControlador empleadoControlador = new EmpleadoControlador();
+    private final PlanillaFacade planillaFacade = new PlanillaFacade();
 
     /**
      * Creates new form NewJFrame
      */
     public FrmPrincipal() {
         initComponents();
-        mostrarPanel(new FrmAsistenciaPerfecta(empleadoControlador));
+        mostrarPanel(new FrmAsistenciaPerfecta(planillaFacade));
     }
 
     private void mostrarPanel(JPanel vista) {
@@ -36,11 +36,11 @@ public class FrmPrincipal extends javax.swing.JFrame {
     }
 
     private void abrirEmpleado(modelo.Empleado empleado) {
-        mostrarPanel(new FrmEmpleado(empleadoControlador, empleado, null));
+        mostrarPanel(new FrmEmpleado(planillaFacade, empleado, null));
     }
 
     private void abrirBoleta(String dni) {
-        FrmBoleta boleta = new FrmBoleta(empleadoControlador);
+        FrmBoleta boleta = new FrmBoleta(planillaFacade);
         if (dni != null) {
             boleta.seleccionarEmpleado(dni);
         }
@@ -131,7 +131,7 @@ public class FrmPrincipal extends javax.swing.JFrame {
     }//GEN-LAST:event_btnRegistrarEmpleadoActionPerformed
 
     private void btnGenerarBoletasActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnGenerarBoletasActionPerformed
-        FrmBoleta f = new FrmBoleta(empleadoControlador);
+        FrmBoleta f = new FrmBoleta(planillaFacade);
         // Quitamos la condición del DNI porque al presionar el menú lateral 
         // se asume que vas a generar una boleta nueva buscando al empleado desde cero
         mostrarPanel(f);
@@ -143,11 +143,11 @@ public class FrmPrincipal extends javax.swing.JFrame {
 
     private void btnListarEmpleadosActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnListarEmpleadosActionPerformed
         // Cargamos la lista de empleados pasándole los métodos de redirección
-        mostrarPanel(new FrmListaEmpleados(empleadoControlador, this::abrirEmpleado, this::abrirBoleta));
+        mostrarPanel(new FrmListaEmpleados(planillaFacade, this::abrirEmpleado, this::abrirBoleta));
     }//GEN-LAST:event_btnListarEmpleadosActionPerformed
 
     private void btnAsistenciaPerfectaActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnAsistenciaPerfectaActionPerformed
-        mostrarPanel(new FrmAsistenciaPerfecta(empleadoControlador));
+        mostrarPanel(new FrmAsistenciaPerfecta(planillaFacade));
     }//GEN-LAST:event_btnAsistenciaPerfectaActionPerformed
 
     /**

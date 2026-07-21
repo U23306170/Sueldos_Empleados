@@ -3,13 +3,7 @@
  * Click nbfs://nbhost/SystemFileSystem/Templates/GUIForms/JPanel.java to edit this template
  */
 package Vista;
-
-import controlador.AreaControlador;
-import controlador.BoletaControlador;
-import controlador.EmpleadoControlador;
-import java.awt.*;
-import java.math.BigDecimal;
-import javax.swing.*;
+import controlador.PlanillaFacade;
 import modelo.Area;
 import modelo.Empleado;
 import java.util.ArrayList;
@@ -17,30 +11,20 @@ import java.util.List;
 import util.Mensajes;
 import util.ValidadorEmpleado;
 
-/**
- *
+/*
  * @author User
  */
 public class FrmEmpleado extends javax.swing.JPanel {
 
-    private final EmpleadoControlador empleadoControlador;
-    private final BoletaControlador boletaControlador;
-    private final AreaControlador areaControlador;
+    private final PlanillaFacade planillaFacade;
     private final List<Area> areas = new ArrayList<>();
-    private Runnable alTerminar;
 
-    /**
-     * Creates new form FrmEmpleado
-     */
     public FrmEmpleado() {
-        this(new EmpleadoControlador(), null, null);
+        this(new PlanillaFacade(), null);
     }
 
-    public FrmEmpleado(EmpleadoControlador controlador, Empleado empleado, Runnable alTerminar) {
-        this.empleadoControlador = controlador;
-        this.boletaControlador = new BoletaControlador(controlador, new servicio.BoletaService());
-        this.areaControlador = new AreaControlador();
-        this.alTerminar = alTerminar;
+    public FrmEmpleado(PlanillaFacade facade, Empleado empleado) {
+        this.planillaFacade = facade;
         initComponents();
         txtResultado.setEditable(false);
         cargarCombos();
@@ -48,7 +32,6 @@ public class FrmEmpleado extends javax.swing.JPanel {
             cargarEmpleado(empleado);
         }
     }
-
     /**
      * This method is called from within the constructor to initialize the form.
      * WARNING: Do NOT modify this code. The content of this method is always
@@ -251,10 +234,10 @@ public class FrmEmpleado extends javax.swing.JPanel {
     private void btnGuardarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnGuardarActionPerformed
         try {
             Empleado empleado = crearEmpleadoDesdeFormulario();
-            empleadoControlador.registrar(empleado);
+            planillaFacade.registrarEmpleado(empleado);
             mostrarVistaPrevia(empleado);
             Mensajes.informacion(this, "Empleado registrado correctamente.");
-            
+
         } catch (RuntimeException e) {
             Mensajes.error(this, e.getMessage());
         }
@@ -262,7 +245,7 @@ public class FrmEmpleado extends javax.swing.JPanel {
 
     private void btnModificarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnModificarActionPerformed
         try {
-            Empleado empleado = empleadoControlador.buscarPorDni(ValidadorEmpleado.dni(txtDni.getText()));
+            Empleado empleado = planillaFacade.buscarEmpleadoPorDni(ValidadorEmpleado.dni(txtDni.getText()));
             if (empleado == null) {
                 throw new IllegalArgumentException("No se encontró un empleado con ese DNI.");
             }
@@ -276,7 +259,7 @@ public class FrmEmpleado extends javax.swing.JPanel {
     private void btnActualizarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnActualizarActionPerformed
         try {
             Empleado empleado = crearEmpleadoDesdeFormulario();
-            empleadoControlador.actualizar(empleado);
+            planillaFacade.actualizarEmpleado(empleado);
             mostrarVistaPrevia(empleado);
             Mensajes.informacion(this, "Empleado actualizado correctamente.");
         } catch (RuntimeException e) {
@@ -288,7 +271,7 @@ public class FrmEmpleado extends javax.swing.JPanel {
         try {
             String dni = ValidadorEmpleado.dni(txtDni.getText());
             if (Mensajes.confirmarEliminacion(this)) {
-                empleadoControlador.eliminar(dni);
+                planillaFacade.eliminarEmpleado(dni);
                 limpiarFormulario();
                 Mensajes.informacion(this, "Empleado eliminado correctamente.");
             }
@@ -305,7 +288,7 @@ public class FrmEmpleado extends javax.swing.JPanel {
         cboArea.removeAllItems();
         try {
             areas.clear();
-            areas.addAll(areaControlador.listar());
+            areas.addAll(planillaFacade.listarAreas());
             for (Area area : areas) {
                 cboArea.addItem(area.getNombre());
             }
@@ -349,7 +332,7 @@ public class FrmEmpleado extends javax.swing.JPanel {
     }
 
     private void mostrarVistaPrevia(Empleado empleado) {
-        txtResultado.setText(boletaControlador.generarTexto(empleado, "Detallado"));
+        txtResultado.setText(planillaFacade.generarBoletaTexto(empleado, "Detallado"));
     }
 
     private void limpiarFormulario() {

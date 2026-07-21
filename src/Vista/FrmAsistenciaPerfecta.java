@@ -4,9 +4,7 @@
  */
 package Vista;
 
-import controlador.BoletaControlador;
-import controlador.AreaControlador;
-import controlador.EmpleadoControlador;
+import controlador.PlanillaFacade;
 import java.util.List;
 import javax.swing.table.DefaultTableModel;
 import modelo.Area;
@@ -20,19 +18,17 @@ import util.Mensajes;
  */
 public class FrmAsistenciaPerfecta extends javax.swing.JPanel {
 
-    private final EmpleadoControlador empleadoControlador;
-    private final AreaControlador areaControlador;
+    private final PlanillaFacade planillaFacade;
 
     /**
      * Creates new form FrmAsistenciaPerfecta
      */
     public FrmAsistenciaPerfecta() {
-        this(new EmpleadoControlador());
+        this(new PlanillaFacade());
     }
 
-    public FrmAsistenciaPerfecta(EmpleadoControlador controlador) {
-        this.empleadoControlador = controlador;
-        this.areaControlador = new AreaControlador();
+    public FrmAsistenciaPerfecta(PlanillaFacade facade) {
+        this.planillaFacade = facade;
         initComponents();
         configurarTabla();
         cargarAreasFiltro();
@@ -274,7 +270,7 @@ public class FrmAsistenciaPerfecta extends javax.swing.JPanel {
             cargarAsistenciaPerfecta(null);
             actualizarEstadisticas();
             limpiarDetalle();
-            Mensajes.informacion(this, "Total con asistencia perfecta: " + empleadoControlador.contarAsistenciaPerfecta());
+            Mensajes.informacion(this, "Total con asistencia perfecta: " + planillaFacade.contarAsistenciaPerfecta());
         } catch (RuntimeException e) {
             Mensajes.error(this, e.getMessage());
         }
@@ -292,7 +288,7 @@ public class FrmAsistenciaPerfecta extends javax.swing.JPanel {
         String dni = jTable1.getValueAt(fila, 0).toString();
 
         Empleado empleado
-                = empleadoControlador.buscarPorDni(dni);
+                = planillaFacade.buscarEmpleadoPorDni(dni);
 
         lblDni.setText("DNI: " + empleado.getDni());
         lblNombre.setText("Nombre: " +empleado.getNombre());
@@ -323,7 +319,7 @@ public class FrmAsistenciaPerfecta extends javax.swing.JPanel {
     private void cargarAreasFiltro() {
         try {
             cboAreaFiltro.removeAllItems();
-            for (Area area : areaControlador.listar()) {
+            for (Area area : planillaFacade.listarAreas()) {
                 cboAreaFiltro.addItem(area);
             }
             cboAreaFiltro.setSelectedIndex(-1); // sin selección = todas las áreas
@@ -336,14 +332,14 @@ public class FrmAsistenciaPerfecta extends javax.swing.JPanel {
     private void cargarAsistenciaPerfecta(Integer idArea) {
         DefaultTableModel modelo = (DefaultTableModel) jTable1.getModel();
         modelo.setRowCount(0);
-        List<Empleado> empleados = empleadoControlador.listarAsistenciaPerfectaPorArea(idArea);
+        List<Empleado> empleados = planillaFacade.listarAsistenciaPerfectaPorArea(idArea);
         for (Empleado empleado : empleados) {
             modelo.addRow(new Object[]{empleado.getDni(), empleado.getNombre(), empleado.getArea().getNombre(), empleado.getDiasAsistidos()});
         }
     }
 
     private void actualizarEstadisticas() {
-        EstadisticasAsistencia estadisticas = empleadoControlador.obtenerEstadisticasAsistencia();
+        EstadisticasAsistencia estadisticas = planillaFacade.obtenerEstadisticasAsistencia();
         lblTotalPerfectos.setText(String.valueOf(estadisticas.getTotalPerfectos()));
         lblAreaMasCumplida.setText(estadisticas.getAreaMasCumplida());
         lblPromedioDias.setText(estadisticas.getPromedioDias().toPlainString());

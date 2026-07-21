@@ -4,8 +4,7 @@
  */
 package Vista;
 
-import controlador.BoletaControlador;
-import controlador.EmpleadoControlador;
+import controlador.PlanillaFacade;
 import java.util.ArrayList;
 import java.util.List;
 import modelo.Empleado;
@@ -17,20 +16,18 @@ import util.Mensajes;
  */
 public class FrmBoleta extends javax.swing.JPanel {
 
-    private final EmpleadoControlador empleadoControlador;
-    private final BoletaControlador boletaControlador;
+    private final PlanillaFacade planillaFacade;
     private final List<Empleado> empleados = new ArrayList<>();
 
     /**
      * Creates new form FrmBoleta
      */
     public FrmBoleta() {
-        this(new EmpleadoControlador());
+        this(new PlanillaFacade());
     }
 
-    public FrmBoleta(EmpleadoControlador controlador) {
-        this.empleadoControlador = controlador;
-        this.boletaControlador = new BoletaControlador(controlador, new servicio.BoletaService());
+    public FrmBoleta(PlanillaFacade facade) {
+        this.planillaFacade = facade;
         initComponents();
         jTextArea1.setEditable(false);
         cargarEmpleados();
@@ -152,7 +149,7 @@ public class FrmBoleta extends javax.swing.JPanel {
                 throw new IllegalArgumentException("No hay empleados registrados.");
             }
             Empleado empleado = empleados.get(jComboBox1.getSelectedIndex());
-            jTextArea1.setText(boletaControlador.generarTexto(empleado.getDni(), (String) jComboBox2.getSelectedItem()));
+            jTextArea1.setText(planillaFacade.generarBoletaTexto(empleado.getDni(), (String) jComboBox2.getSelectedItem()));
         } catch (RuntimeException e) {
             Mensajes.error(this, e.getMessage());
         }
@@ -170,7 +167,7 @@ public class FrmBoleta extends javax.swing.JPanel {
         jComboBox1.removeAllItems();
         try {
             empleados.clear();
-            empleados.addAll(empleadoControlador.listar());
+            empleados.addAll(planillaFacade.listarEmpleados());
             for (Empleado empleado : empleados) {
                 jComboBox1.addItem(empleado.toString());
             }
