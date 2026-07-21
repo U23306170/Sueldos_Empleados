@@ -23,9 +23,9 @@ public final class Mensajes {
     public static void error(Component padre, String texto) {
         JOptionPane.showMessageDialog(padre, texto, "Error", JOptionPane.ERROR_MESSAGE);
     }
-    
-    public static void advertencia(Component padre,String texto) {
-        JOptionPane.showMessageDialog(padre,texto,"Advertencia",JOptionPane.WARNING_MESSAGE
+
+    public static void advertencia(Component padre, String texto) {
+        JOptionPane.showMessageDialog(padre, texto, "Advertencia", JOptionPane.WARNING_MESSAGE
         );
     }
 

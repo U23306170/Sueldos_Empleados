@@ -17,7 +17,6 @@ public class ConexionSQL {
     private static final String USUARIO = "root";
     private static final String CONTRASEÑA = "76529543Alexi$";
 
-    // Método para obtener la conexión
     public static Connection conectar() {
         Connection conn = null;
         try {

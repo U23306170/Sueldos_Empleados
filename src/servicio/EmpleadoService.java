@@ -64,8 +64,7 @@ public class EmpleadoService {
                 .collect(Collectors.toList());
     }
 
-    /**
-     * Calcula indicadores de toda la planilla, sin depender de Swing.
+    /*Calcula indicadores de toda la planilla, sin depender de Swing.
      * @return 
      */
     public EstadisticasAsistencia calcularEstadisticasAsistencia() {
